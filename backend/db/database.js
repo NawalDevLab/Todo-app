@@ -10,14 +10,11 @@ const pool = mysql.createPool({
   connectionLimit: 10,
 });
 
-// Initialiser la base de données
 const initDB = async () => {
   try {
     const conn = await pool.getConnection();
-
     await conn.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME || 'todo_app'}\``);
     await conn.query(`USE \`${process.env.DB_NAME || 'todo_app'}\``);
-
     await conn.query(`
       CREATE TABLE IF NOT EXISTS todos (
         id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,7 +27,6 @@ const initDB = async () => {
         updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
     `);
-
     conn.release();
     console.log('✅ Base de données initialisée');
   } catch (err) {
